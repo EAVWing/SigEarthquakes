@@ -1,10 +1,15 @@
 #' getSignif function downloads the data and loads the data frame into memory
 #'
-#' This function will download the Significant Earthquake Database from the National Oceanic and Atmospheric Administration's (NOAA) website if it doesn't already exist in the working directory and load it as a data frame.
+#' This function will download the Significant Earthquake Database from the National Oceanic and Atmospheric Administration's (NOAA) website if it doesn't already exist in the working directory and load it as a data frame in the global environment.
 #'
 #' @return raw signif data frame
 #'
 #' @importFrom readr read_tsv
+#'
+#' @examples{
+#' \dontrun{
+#' getSignif()
+#'}}
 #'
 #' @export
 getSignif <- function() {
@@ -21,11 +26,16 @@ getSignif <- function() {
     assign("signif", readr::read_tsv(filename), envir = globalenv())
 }
 
-#' eq_clean_data function takes raw NOAA signif data frame and returns a clean data frame.
+#' eq_clean_data function takes raw NOAA signif data frame and returns a data frame with the Date field added.
 #'
-#' @return clean signif data frame
+#' @return Ac copy of the signif data frame with the Date field added
 #'
 #' @importFrom lubridate ymd round_date
+#'
+#' @examples{
+#' \dontrun{
+#' eq_clean_data()
+#'}}
 #'
 #' @export
 eq_clean_data <- function() {
@@ -68,9 +78,14 @@ eq_clean_data <- function() {
 
 #' eq_location_clean function takes raw LOCATION NAME from the signif data frame and returns a clean field.
 #'
-#' @return LOCATION_NAME in title case and without the country name
+#' @return modified signif data frame with the LOCATION_NAME in title case and the country name removed from the LOCATION NAME field
 #'
 #' @importFrom stringr str_to_title str_replace
+#'
+#' @examples{
+#' \dontrun{
+#' eq_location_clean()
+#'}}
 #'
 #' @export
 eq_location_clean <- function() {

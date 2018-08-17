@@ -7,8 +7,15 @@
 eq_location_clean()
 }
 \value{
-LOCATION_NAME in title case and without the country name
+modified signif data frame with the LOCATION_NAME in title case and the country name removed from the LOCATION NAME field
 }
 \description{
 eq_location_clean function takes raw LOCATION NAME from the signif data frame and returns a clean field.
+}
+\examples{
+{
+\dontrun{
+eq_location_clean()
+}}
+
 }
