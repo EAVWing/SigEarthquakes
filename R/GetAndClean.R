@@ -34,6 +34,8 @@ getData <- function() {
 #'
 #' @importFrom lubridate ymd round_date
 #'
+#' @importFrom dplyr mutate_
+#'
 #' @examples{
 #' \dontrun{
 #' eq_clean_data(getData())
@@ -74,6 +76,12 @@ eq_clean_data <- function(data) {
                 z1[which(as.numeric(data$YEAR) < 0 & ((as.numeric(data$YEAR) %% 4 == 0 &
                 as.numeric(data$YEAR) %% 100 != 0) | as.numeric(data$YEAR) %% 400 == 0) &
                 data$MONTH > 2)]
+
+        data <- data %>%
+            dplyr::mutate_(LATITUDE = ~as.numeric(LATITUDE),
+                           LONGITUDE = ~as.numeric(LONGITUDE))
+
+        data <- eq_location_clean(data)
 
         data
 }

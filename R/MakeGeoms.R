@@ -8,7 +8,7 @@
 #'
 #'@examples
 #'\dontrun{
-#'getData() %>% eq_clean_data() %>% eq_location_clean() %>%
+#'getData() %>% eq_clean_data() %>%
 #' filter(COUNTRY %in% c("USA"), YEAR > 2010) %>%
 #'  ggplot(aes(x = DATE, y = COUNTRY, color = as.numeric(TOTAL_DEATHS), size = as.numeric(EQ_PRIMARY))) +
 #'  geom_timeline() + labs(size = "Richter scale value", color = "# deaths")
@@ -94,7 +94,7 @@ GeomTimeline <- ggplot2::ggproto(
 #'
 #' @examples
 #' \dontrun{
-#'getData() %>% eq_clean_data() %>% eq_location_clean() %>%
+#'getData() %>% eq_clean_data() %>%
 #' filter(COUNTRY %in% c("USA"), YEAR > 2010) %>%
 #'  ggplot(aes(x = DATE, y = COUNTRY, color = as.numeric(TOTAL_DEATHS), size = as.numeric(EQ_PRIMARY))) +
 #'  geom_timeline() + theme_timeline() + labs(size = "Richter scale value", color = "# deaths")
@@ -130,7 +130,7 @@ theme_timeline <- function() {
 #'
 #' @examples
 #' \dontrun{
-#' getData() %>% eq_clean_data() %>% eq_location_clean() %>%
+#' getData() %>% eq_clean_data() %>%
 #' filter(COUNTRY %in% c("USA"), YEAR > 2010) %>%
 #' ggplot(aes(x = DATE, y = COUNTRY, color = as.numeric(TOTAL_DEATHS), size = as.numeric(EQ_PRIMARY))) +
 #' geom_timeline() + geom_timeline_label(aes(label = LOCATION_NAME), n_max = 5) +
