@@ -6,6 +6,9 @@
 \usage{
 eq_clean_data(data)
 }
+\arguments{
+\item{data}{A data frame with raw data obtained from NOAA website}
+}
 \value{
 A copy of the data data frame with the Date field added
 }
@@ -13,9 +16,8 @@ A copy of the data data frame with the Date field added
 eq_clean_data function takes raw NOAA data data frame and returns a data frame with the Date field added.
 }
 \examples{
-{
 \dontrun{
 eq_clean_data(getData())
-}}
+}
 
 }

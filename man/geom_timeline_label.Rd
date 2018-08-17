@@ -66,8 +66,10 @@ The function adds timeline labels for the earthquakes  plotted with geom_timelin
 \dontrun{
 getData() \%>\% eq_clean_data() \%>\%
 filter(COUNTRY \%in\% c("USA"), YEAR > 2010) \%>\%
-ggplot(aes(x = DATE, y = COUNTRY, color = as.numeric(TOTAL_DEATHS), size = as.numeric(EQ_PRIMARY))) +
-geom_timeline() + geom_timeline_label(aes(label = LOCATION_NAME), n_max = 5) +
+ggplot(aes(x = DATE, y = COUNTRY, color = as.numeric(TOTAL_DEATHS),
+ size = as.numeric(EQ_PRIMARY))) +
+geom_timeline() + geom_timeline_label(aes(label = LOCATION_NAME)
+  , n_max = 5) +
 theme_timeline() + labs(size = "Richter scale value", color = "# deaths")
 }
 

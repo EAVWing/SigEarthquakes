@@ -1,0 +1,93 @@
+---
+title: "Significant Earthquakes Package"
+author: "Stephen Ewing"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Vignette Title}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+
+library(SigEarthquakes)
+library(dplyr)
+library(ggplot2)
+```
+
+Hello, and welcome to my NOAA earthquake data r-package for the Mastering R-Programming Capstone
+project.  This package has 3 key elements, cleaning the data to make it suitable for 
+plotting, building time line maps using a custom geom and plotting custom maps using the leaflet
+package.
+
+
+# GetAndClean.R
+The data cleaning piece is housed in the `GetAndClean.R` file.  It includes two exported functions.
+
+`getData()` will check and see if you have the signif.txt file in your working directory.  If you don't
+it will download it from the NOAA website.  It then load that data into a data frame using the readr
+package.
+```{r}
+rawData <- getData()
+head(rawData)
+```
+
+The `eq_data_clean` function takes that raw data and does the following:
+
+1.  A date column created by uniting the year, month, day and converting it to the Date class
+
+
+2.  LATITUDE and LONGITUDE columns converted to numeric class
+
+
+3. Cleans the LOCATION_NAME column by stripping out the country name (including the colon) and 
+    converts names to title case (as opposed to all caps). 
+```{r}
+locAndDate <- getData() %>% eq_clean_data() %>% select("LOCATION_NAME", "DATE")
+head(locAndDate)
+```
+
+# MakeGeoms.R
+This file creates geoms that can be plotted using the ggplot2 system.  One makes a time line, another adds labels and I've also included a custom theme.
+
+As you can see below you can give it multiple countries, multiple years or any other filter of the data set you would like.  The larger the circles the bigger the magnitude of the quake and the darker the circles the more people died. All that is considered when you call `geom_timeline()`
+
+For the lables you can change what the lables show with the `label =` argument as well as how many lables are shown with the `n_max =` argument.  This is called via `geom_timeline_label(aes(label = LOCATION_NAME), n_max = 5)`
+
+Fianlly `theme_timeline()` cleans up the presentation of it a bit.
+
+```{r fig.height=8, fig.width=8}
+plot <- getData() %>% eq_clean_data() %>%
+filter(COUNTRY %in% c("USA", "CANADA", "MEXICO"), YEAR > 2010) %>%
+ggplot(aes(x = DATE, y = COUNTRY, color = as.numeric(TOTAL_DEATHS),
+size = as.numeric(EQ_PRIMARY))) +
+geom_timeline() + geom_timeline_label(aes(label = LOCATION_NAME), n_max = 5) +
+theme_timeline() + labs(size = "Richter scale value", color = "# deaths")
+
+plot
+```
+
+# MakeMap.R
+
+The last two functions in the package are for mapping on a leaflet map.
+
+`eq_create_label` just makes the labels we use in the popups on the map.
+
+`eq_map` takes as inupt the column of text you want to have included in the popups on the map.  
+I've made a custom popup text which is pretty nice so I wouldn't change the input from 
+`eq_map(annot_col = "popup_text")`
+
+```{r fig.height=8, fig.width=8}
+map <- getData() %>% eq_clean_data() %>%
+dplyr::filter(COUNTRY == "JAPAN" & lubridate::year(DATE) >= 2000) %>%
+dplyr::mutate(popup_text = eq_create_label(.)) %>%
+eq_map(annot_col = "popup_text")
+
+map
+```
+

@@ -6,6 +6,9 @@
 \usage{
 eq_location_clean(data)
 }
+\arguments{
+\item{data}{A data frame with raw data obtained from NOAA website}
+}
 \value{
 modified data data frame with the LOCATION_NAME in title case and the country name removed from the LOCATION NAME field
 }
@@ -13,9 +16,8 @@ modified data data frame with the LOCATION_NAME in title case and the country na
 eq_location_clean function takes raw LOCATION NAME from the data data frame and returns a clean field.
 }
 \examples{
-{
 \dontrun{
 eq_location_clean(data)
-}}
+}
 
 }

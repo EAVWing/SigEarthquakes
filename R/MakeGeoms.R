@@ -10,7 +10,8 @@
 #'\dontrun{
 #'getData() %>% eq_clean_data() %>%
 #' filter(COUNTRY %in% c("USA"), YEAR > 2010) %>%
-#'  ggplot(aes(x = DATE, y = COUNTRY, color = as.numeric(TOTAL_DEATHS), size = as.numeric(EQ_PRIMARY))) +
+#'  ggplot(aes(x = DATE, y = COUNTRY, color = as.numeric(TOTAL_DEATHS),
+#'   size = as.numeric(EQ_PRIMARY))) +
 #'  geom_timeline() + labs(size = "Richter scale value", color = "# deaths")
 #'}
 #'
@@ -96,8 +97,10 @@ GeomTimeline <- ggplot2::ggproto(
 #' \dontrun{
 #'getData() %>% eq_clean_data() %>%
 #' filter(COUNTRY %in% c("USA"), YEAR > 2010) %>%
-#'  ggplot(aes(x = DATE, y = COUNTRY, color = as.numeric(TOTAL_DEATHS), size = as.numeric(EQ_PRIMARY))) +
-#'  geom_timeline() + theme_timeline() + labs(size = "Richter scale value", color = "# deaths")
+#'  ggplot(aes(x = DATE, y = COUNTRY, color = as.numeric(TOTAL_DEATHS),
+#'   size = as.numeric(EQ_PRIMARY))) +
+#'  geom_timeline() + theme_timeline() +
+#'  labs(size = "Richter scale value", color = "# deaths")
 #'}
 #'
 #' @importFrom ggplot2 theme element_blank element_line
@@ -132,8 +135,10 @@ theme_timeline <- function() {
 #' \dontrun{
 #' getData() %>% eq_clean_data() %>%
 #' filter(COUNTRY %in% c("USA"), YEAR > 2010) %>%
-#' ggplot(aes(x = DATE, y = COUNTRY, color = as.numeric(TOTAL_DEATHS), size = as.numeric(EQ_PRIMARY))) +
-#' geom_timeline() + geom_timeline_label(aes(label = LOCATION_NAME), n_max = 5) +
+#' ggplot(aes(x = DATE, y = COUNTRY, color = as.numeric(TOTAL_DEATHS),
+#'  size = as.numeric(EQ_PRIMARY))) +
+#' geom_timeline() + geom_timeline_label(aes(label = LOCATION_NAME)
+#'   , n_max = 5) +
 #' theme_timeline() + labs(size = "Richter scale value", color = "# deaths")
 #' }
 #'
@@ -191,7 +196,7 @@ GeomTimelineLabel <-
 
             coords <- coord$transform(data, panel_scales)
             n_grp <- length(unique(data$group))
-            offset <- 0.2 / n_grp
+            offset <- 0.1 / n_grp
 
             lines <- grid::polylineGrob(
                 x = unit(c(coords$x, coords$x), "npc"),
@@ -205,7 +210,7 @@ GeomTimelineLabel <-
                 x = unit(coords$x, "npc"),
                 y = unit(coords$y + offset, "npc"),
                 just = c("left", "bottom"),
-                rot = 45
+                rot = 25
             )
 
             grid::gList(lines, names)

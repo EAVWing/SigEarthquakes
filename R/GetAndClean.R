@@ -6,10 +6,12 @@
 #'
 #' @importFrom readr read_tsv
 #'
-#' @examples{
+#' @importFrom utils download.file
+#'
+#' @examples
 #' \dontrun{
 #' rawData <- getData()
-#'}}
+#'}
 #'
 #' @export
 getData <- function() {
@@ -36,10 +38,12 @@ getData <- function() {
 #'
 #' @importFrom dplyr mutate_
 #'
-#' @examples{
+#' @param data A data frame with raw data obtained from NOAA website
+#'
+#' @examples
 #' \dontrun{
 #' eq_clean_data(getData())
-#'}}
+#'}
 #'
 #' @export
 eq_clean_data <- function(data) {
@@ -94,10 +98,12 @@ eq_clean_data <- function(data) {
 #'
 #' @importFrom dplyr mutate_ %>%
 #'
-#' @examples{
+#' @param data A data frame with raw data obtained from NOAA website
+#'
+#' @examples
 #' \dontrun{
 #' eq_location_clean(data)
-#'}}
+#'}
 #'
 #' @export
 eq_location_clean <- function(data) {

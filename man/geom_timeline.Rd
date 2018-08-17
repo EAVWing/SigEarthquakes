@@ -60,7 +60,8 @@ This geom plots a time line of earthquakes which occured over a give span of yea
 \dontrun{
 getData() \%>\% eq_clean_data() \%>\%
 filter(COUNTRY \%in\% c("USA"), YEAR > 2010) \%>\%
- ggplot(aes(x = DATE, y = COUNTRY, color = as.numeric(TOTAL_DEATHS), size = as.numeric(EQ_PRIMARY))) +
+ ggplot(aes(x = DATE, y = COUNTRY, color = as.numeric(TOTAL_DEATHS),
+  size = as.numeric(EQ_PRIMARY))) +
  geom_timeline() + labs(size = "Richter scale value", color = "# deaths")
 }
 

@@ -48,7 +48,7 @@ eq_map <- function(data, annot_col) {
 #' eq_create_label(data)
 #' }
 #'
-#' @export
+#'@export
 eq_create_label <- function(data) {
     popup_text <- with(data, {
         part1 <- ifelse(is.na(LOCATION_NAME), "",

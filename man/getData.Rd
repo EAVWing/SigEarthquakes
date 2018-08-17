@@ -13,9 +13,8 @@ raw data data frame
 This function will download the Significant Earthquake Database from the National Oceanic and Atmospheric Administration's (NOAA) website if it doesn't already exist in the working directory and load it as a data frame in the global environment.
 }
 \examples{
-{
 \dontrun{
 rawData <- getData()
-}}
+}
 
 }
