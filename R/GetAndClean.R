@@ -1,18 +1,18 @@
-#' getSignif function downloads the data and loads the data frame into memory
+#' getData function downloads the data and loads the data frame into memory
 #'
 #' This function will download the Significant Earthquake Database from the National Oceanic and Atmospheric Administration's (NOAA) website if it doesn't already exist in the working directory and load it as a data frame in the global environment.
 #'
-#' @return raw signif data frame
+#' @return raw data data frame
 #'
 #' @importFrom readr read_tsv
 #'
 #' @examples{
 #' \dontrun{
-#' getSignif()
+#' rawData <- getData()
 #'}}
 #'
 #' @export
-getSignif <- function() {
+getData <- function() {
 
     filename <- "signif.txt"
 
@@ -22,83 +22,82 @@ getSignif <- function() {
 
         download.file(fileURL, filename)
     }
+    data <- suppressMessages(readr::read_tsv(filename))
 
-    assign("signif", readr::read_tsv(filename), envir = globalenv())
+    data
+    #assign("data", readr::read_tsv(filename), envir = globalenv())
 }
 
-#' eq_clean_data function takes raw NOAA signif data frame and returns a data frame with the Date field added.
+#' eq_clean_data function takes raw NOAA data data frame and returns a data frame with the Date field added.
 #'
-#' @return Ac copy of the signif data frame with the Date field added
+#' @return A copy of the data data frame with the Date field added
 #'
 #' @importFrom lubridate ymd round_date
 #'
 #' @examples{
 #' \dontrun{
-#' eq_clean_data()
+#' eq_clean_data(getData())
 #'}}
 #'
 #' @export
-eq_clean_data <- function() {
+eq_clean_data <- function(data) {
 
-        signif$MONTH[is.na(signif$MONTH)] <- 1
+        data$MONTH[is.na(data$MONTH)] <- 1
 
-        signif$DAY[is.na(signif$DAY)] <- 1
+        data$DAY[is.na(data$DAY)] <- 1
 
-        signif$YEAR <- formatC(signif$YEAR, width = 4, flag = 0)
+        data$YEAR <- formatC(data$YEAR, width = 4, flag = 0)
 
-        signif[, "date"] <- NA
+        data[, "DATE"] <- NA
 
-        signif$date <- suppressWarnings(lubridate::ymd(paste(signif$YEAR, "/", signif$MONTH, "/", signif$DAY)))
+        data$DATE <- suppressWarnings(lubridate::ymd(paste(data$YEAR, "/", data$MONTH, "/", data$DAY)))
 
         y <- lubridate::ymd("0000-01-01") -
-                (abs(as.numeric(signif$YEAR)) * 365) -
-                (abs(as.numeric(signif$YEAR)) / 4) +
-                .75 * (abs(as.numeric(signif$YEAR)) / 100)
+                (abs(as.numeric(data$YEAR)) * 365) -
+                (abs(as.numeric(data$YEAR)) / 4) +
+                .75 * (abs(as.numeric(data$YEAR)) / 100)
 
-        signif$date[which(as.numeric(signif$YEAR) < 0)] =
-                y[which(as.numeric(signif$YEAR) < 0)]
+        data$DATE[which(as.numeric(data$YEAR) < 0)] =
+                y[which(as.numeric(data$YEAR) < 0)]
 
-        z <- lubridate::round_date(signif$date, unit = "year") +
-                julian(as.Date(paste0("1970-", signif$MONTH, "-", signif$DAY)))
+        z <- lubridate::round_date(data$DATE, unit = "year") +
+                julian(as.Date(paste0("1970-", data$MONTH, "-", data$DAY)))
 
-        signif$date[which(as.numeric(signif$YEAR) < 0)] =
-                z[which(as.numeric(signif$YEAR) < 0)]
+        data$DATE[which(as.numeric(data$YEAR) < 0)] =
+                z[which(as.numeric(data$YEAR) < 0)]
 
         z1 <- z + 1
 
-        signif$date[which(as.numeric(signif$YEAR) < 0 &
-                ((as.numeric(signif$YEAR) %% 4 == 0 & as.numeric(signif$YEAR) %% 100 != 0) |
-                as.numeric(signif$YEAR) %% 400 == 0) & signif$MONTH > 2)] =
-                z1[which(as.numeric(signif$YEAR) < 0 & ((as.numeric(signif$YEAR) %% 4 == 0 &
-                as.numeric(signif$YEAR) %% 100 != 0) | as.numeric(signif$YEAR) %% 400 == 0) &
-                signif$MONTH > 2)]
+        data$DATE[which(as.numeric(data$YEAR) < 0 &
+                ((as.numeric(data$YEAR) %% 4 == 0 & as.numeric(data$YEAR) %% 100 != 0) |
+                as.numeric(data$YEAR) %% 400 == 0) & data$MONTH > 2)] =
+                z1[which(as.numeric(data$YEAR) < 0 & ((as.numeric(data$YEAR) %% 4 == 0 &
+                as.numeric(data$YEAR) %% 100 != 0) | as.numeric(data$YEAR) %% 400 == 0) &
+                data$MONTH > 2)]
 
-        assign("signif", signif, envir = globalenv())
+        data
 }
 
-#' eq_location_clean function takes raw LOCATION NAME from the signif data frame and returns a clean field.
+#' eq_location_clean function takes raw LOCATION NAME from the data data frame and returns a clean field.
 #'
-#' @return modified signif data frame with the LOCATION_NAME in title case and the country name removed from the LOCATION NAME field
+#' @return modified data data frame with the LOCATION_NAME in title case and the country name removed from the LOCATION NAME field
 #'
-#' @importFrom stringr str_to_title str_replace
+#' @importFrom stringr str_to_title str_replace str_trim
+#'
+#' @importFrom dplyr mutate_ %>%
 #'
 #' @examples{
 #' \dontrun{
-#' eq_location_clean()
+#' eq_location_clean(data)
 #'}}
 #'
 #' @export
-eq_location_clean <- function() {
+eq_location_clean <- function(data) {
 
-        i <- 1
-
-        for (i in 1:length(signif$LOCATION_NAME)) {
-
-                signif$LOCATION_NAME[i] <- str_replace(signif$LOCATION_NAME[i],paste0(signif$COUNTRY[i], ": "),"")
-
-                signif$LOCATION_NAME[i] <- str_to_title(signif$LOCATION_NAME[i])
-
-                i <- i + 1
-        }
-        assign("signif", signif, envir = globalenv())
+    data <- data %>%
+        dplyr::mutate_(LOCATION_NAME = ~LOCATION_NAME %>%
+                           stringr::str_replace(paste0(COUNTRY, ":"), "") %>%
+                           stringr::str_trim("both") %>%
+                           stringr::str_to_title())
+    data
 }

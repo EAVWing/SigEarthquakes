@@ -2,20 +2,20 @@
 % Please edit documentation in R/GetAndClean.R
 \name{eq_clean_data}
 \alias{eq_clean_data}
-\title{eq_clean_data function takes raw NOAA signif data frame and returns a data frame with the Date field added.}
+\title{eq_clean_data function takes raw NOAA data data frame and returns a data frame with the Date field added.}
 \usage{
-eq_clean_data()
+eq_clean_data(data)
 }
 \value{
-Ac copy of the signif data frame with the Date field added
+A copy of the data data frame with the Date field added
 }
 \description{
-eq_clean_data function takes raw NOAA signif data frame and returns a data frame with the Date field added.
+eq_clean_data function takes raw NOAA data data frame and returns a data frame with the Date field added.
 }
 \examples{
 {
 \dontrun{
-eq_clean_data()
+eq_clean_data(getData())
 }}
 
 }

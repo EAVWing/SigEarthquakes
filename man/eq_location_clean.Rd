@@ -2,20 +2,20 @@
 % Please edit documentation in R/GetAndClean.R
 \name{eq_location_clean}
 \alias{eq_location_clean}
-\title{eq_location_clean function takes raw LOCATION NAME from the signif data frame and returns a clean field.}
+\title{eq_location_clean function takes raw LOCATION NAME from the data data frame and returns a clean field.}
 \usage{
-eq_location_clean()
+eq_location_clean(data)
 }
 \value{
-modified signif data frame with the LOCATION_NAME in title case and the country name removed from the LOCATION NAME field
+modified data data frame with the LOCATION_NAME in title case and the country name removed from the LOCATION NAME field
 }
 \description{
-eq_location_clean function takes raw LOCATION NAME from the signif data frame and returns a clean field.
+eq_location_clean function takes raw LOCATION NAME from the data data frame and returns a clean field.
 }
 \examples{
 {
 \dontrun{
-eq_location_clean()
+eq_location_clean(data)
 }}
 
 }
